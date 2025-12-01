@@ -34,6 +34,8 @@ int		validate(int n, char **input)
 			return(0);
 		i++;
 	}
+	if (ft_atoi(input[0]) == 0)
+		return (0);
 	return (1);
 }
 

@@ -52,6 +52,22 @@ int	ft_atoi(char *str)
 	return (num);
 }
 
+void	cleanup(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->n_philos)
+	{
+		pthread_mutex_destroy(&table->forks[i]);
+		i++;
+	}
+	pthread_mutex_destroy(&table->write_lock);
+	pthread_mutex_destroy(&table->death_lock);
+	free(table->forks);
+	free(table->philos);
+}
+
 void	error(void)
 {
     printf("%s", "Please provide correct input.\n"

@@ -22,5 +22,6 @@ int	main(int argc, char **argv)
 		return (error(), 1);
 	if (!init_table(&table, argv))
 		return (1);
+	cleanup(&table);
 	return (0);
 }

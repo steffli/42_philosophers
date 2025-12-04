@@ -42,8 +42,14 @@ int		ft_atoi(char *str);
 // Init
 int		init_table(t_table *table, char **argv);
 
+// Philo routine
+void	*philo_routine(char *arg);
+
 // Custom time utils
 long	get_time(void);
 void	ft_usleep(long time);
+
+// errors
+void	cleanup(t_table *table);
 
 #endif

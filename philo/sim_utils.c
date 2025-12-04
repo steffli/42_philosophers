@@ -12,6 +12,25 @@
 
 #include "philo.h"
 
+static 	bool ate(t_table *table)
+{
+	int		i;
+	bool	full;
+
+	i = 0;
+	full = true;
+	if (table->n_meals == -1)
+		return (false);
+	while (i < table->n_philos)
+	{
+		pthread_mutex_lock(&table->death_lock);
+		if (table->philos[i].meals_eaten < table->n_meals)
+			full = false;
+		pthread_mutex_unlock(&table->death_lock);
+		i++;
+	}
+	return (full);
+}
 static	bool died(t_philo *philo)
 {
 	long	time;
@@ -22,7 +41,7 @@ static	bool died(t_philo *philo)
 	{
 		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_lock);
-		pthead_mutex_lock(&philo->table->write_lock);
+		pthread_mutex_lock(&philo->table->write_lock);
 		printf("%ld %d died\n", get_time() - philo->table->start_time, philo->id);
 		pthread_mutex_unlock(&philo->table->write_lock);
 		return (true);
@@ -43,7 +62,7 @@ static void	monitor(t_table *table)
 				return ;
 			i++;
 		}
-		if (check_all_ate(table))
+		if (ate(table))
 		{
 			pthread_mutex_lock(&table->death_lock);
 			table->dead = 1;
@@ -70,7 +89,22 @@ void	start_sim(t_table *table)
 	i = 0;
 	while (table->n_philos)
 	{
-		pthread_join(table->philos[i].thead, NULL);
+		pthread_join(table->philos[i].thread, NULL);
 		i++;
 	}
+}
+
+void	status(t_philo *philo, char *state)
+{
+	long	time;
+
+	pthread_mutex_lock(&philo->table->write_lock);
+	pthread_mutex_lock(&philo->table->death_lock);
+	if (!philo->table->dead)
+	{
+		time = get_time() - philo->table->start_time;
+		printf("%ld %d %s\n", time, philo->id, state);
+	}
+	pthread_mutex_unlock(&philo->table->death_lock);
+	pthread_mutex_unlock(&philo->table->write_lock);
 }

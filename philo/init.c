@@ -55,8 +55,9 @@ int	init_table(t_table *table, char **argv)
 	table->time_to_sleep = ft_atoi(argv[4]);
 	if (argv[5])
 		table->n_meals = ft_atoi(argv[5]);
+	else
+		table->n_meals = -1;
 	table->dead = 0;
-	table->start_time = get_time();
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->n_philos);
 	if (!table->forks)
 		return (0);

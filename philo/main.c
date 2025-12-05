@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 		return (error(), 1);
 	if (!init_table(&table, argv))
 		return (1);
+	start_sim(&table);
 	cleanup(&table);
 	return (0);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: stliu <stliu@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/05 09:19:39 by stliu             #+#    #+#             */
+/*   Updated: 2025/12/05 09:19:39 by stliu            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -43,11 +55,14 @@ int		ft_atoi(char *str);
 int		init_table(t_table *table, char **argv);
 
 // Philo routine
-void	*philo_routine(char *arg);
+void	*philo_routine(void *arg);
+void	print_status(t_philo *philo, char *state);
+void	start_sim(t_table *table);
 
 // Custom time utils
 long	get_time(void);
 void	ft_usleep(long time);
+void	think_time(t_philo *philo);
 
 // errors
 void	cleanup(t_table *table);

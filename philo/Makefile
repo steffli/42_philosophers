@@ -14,7 +14,7 @@ NAME = philo
 CC = cc
 FLAGS = -Wall -Wextra -Werror -pthread
 
-SRC = main.c utils.c init.c time.c sim_utils.c
+SRC = main.c utils.c init.c time.c sim_utils.c routine.c
 
 OBJ = $(SRC:.c=.o)
 

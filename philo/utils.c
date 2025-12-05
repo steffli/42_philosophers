@@ -13,7 +13,7 @@
 #include "philo.h"
 
 //n_philo time_to_die time_to_eat time_to_sleep [n_times_eat]
-static int		ft_isnum(char *str)
+static int	ft_isnum(char *str)
 {
 	while (*str)
 	{
@@ -23,7 +23,8 @@ static int		ft_isnum(char *str)
 	}
 	return (1);
 }
-int		validate(int n, char **input)
+
+int	validate(int n, char **input)
 {
 	int	i;
 
@@ -31,7 +32,7 @@ int		validate(int n, char **input)
 	while (i < n)
 	{
 		if (!ft_isnum(input[i]))
-			return(0);
+			return (0);
 		i++;
 	}
 	if (ft_atoi(input[0]) == 0)
@@ -70,10 +71,10 @@ void	cleanup(t_table *table)
 
 void	error(void)
 {
-    printf("%s", "Please provide correct input.\n"
-        "number_of_philosophers\n"
-        "time_to_die\n"
-        "time_to_eat\n"
-        "time_to_sleep\n"
-        "[number_of_meals_per_philosopher]\n");
+	printf("%s", "Please provide correct input.\n"
+		"number_of_philosophers\n"
+		"time_to_die\n"
+		"time_to_eat\n"
+		"time_to_sleep\n"
+		"[number_of_meals_per_philosopher]\n");
 }

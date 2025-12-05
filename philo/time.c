@@ -28,3 +28,17 @@ void	ft_usleep(long time)
 	while ((get_time() - start) < time)
 		usleep(100);
 }
+
+void	think_time(t_philo *philo)
+{
+	long	time_to_think;
+
+	time_to_think = (philo->table->time_to_die - philo->table->time_to_eat
+			- philo->table->time_to_sleep) / 2;
+	if (time_to_think < 0)
+		time_to_think = 0;
+	if (time_to_think > 600)
+		time_to_think = 200;
+	if (time_to_think > 0)
+		ft_usleep(time_to_think);
+}

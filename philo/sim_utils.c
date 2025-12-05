@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-static 	bool ate(t_table *table)
+static bool	ate(t_table *table)
 {
 	int		i;
 	bool	full;
@@ -31,7 +31,8 @@ static 	bool ate(t_table *table)
 	}
 	return (full);
 }
-static	bool died(t_philo *philo)
+
+static	bool	died(t_philo *philo)
 {
 	long	time;
 
@@ -42,21 +43,23 @@ static	bool died(t_philo *philo)
 		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_lock);
 		pthread_mutex_lock(&philo->table->write_lock);
-		printf("%ld %d died\n", get_time() - philo->table->start_time, philo->id);
+		printf("%ld %d died\n",
+			get_time() - philo->table->start_time, philo->id);
 		pthread_mutex_unlock(&philo->table->write_lock);
 		return (true);
 	}
 	pthread_mutex_unlock(&philo->table->death_lock);
 	return (false);
 }
+
 static void	monitor(t_table *table)
 {
-	int i;
+	int	i;
 
-	while(1)
+	while (1)
 	{
 		i = 0;
-		while (table->n_philos)
+		while (i < table->n_philos)
 		{
 			if (died(&table->philos[i]))
 				return ;
@@ -69,9 +72,10 @@ static void	monitor(t_table *table)
 			pthread_mutex_unlock(&table->death_lock);
 			return ;
 		}
-		usleep(100);
+		usleep(1000);
 	}
 }
+
 void	start_sim(t_table *table)
 {
 	int	i;
@@ -87,14 +91,14 @@ void	start_sim(t_table *table)
 	}
 	monitor(table);
 	i = 0;
-	while (table->n_philos)
+	while (i < table->n_philos)
 	{
 		pthread_join(table->philos[i].thread, NULL);
 		i++;
 	}
 }
 
-void	status(t_philo *philo, char *state)
+void	print_status(t_philo *philo, char *state)
 {
 	long	time;
 

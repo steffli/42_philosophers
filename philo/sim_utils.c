@@ -35,10 +35,13 @@ static bool	ate(t_table *table)
 static	bool	died(t_philo *philo)
 {
 	long	time;
+	long	start;
+
+	start = get_time();
 
 	pthread_mutex_lock(&philo->table->death_lock);
-	time = get_time() - philo->last_meal;
-	if (time > philo->table->time_to_die)
+	time = start - philo->last_meal;
+	if (time >= philo->table->time_to_die)
 	{
 		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_lock);
@@ -72,7 +75,6 @@ static void	monitor(t_table *table)
 			pthread_mutex_unlock(&table->death_lock);
 			return ;
 		}
-		usleep(1000);
 	}
 }
 

@@ -45,14 +45,17 @@ static void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_t	*first;
 	pthread_mutex_t	*second;
+	long			time;
 
+	
 	get_forks_order(philo, &first, &second);
 	take_forks(philo, first, second);
+	time = get_time();
 	if (philo->table->n_philos == 1)
 		return ;
 	print_status(philo, "is eating");
 	pthread_mutex_lock(&philo->table->death_lock);
-	philo->last_meal = get_time();
+	philo->last_meal = time;
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->death_lock);
 	ft_usleep(philo->table->time_to_eat);

@@ -56,13 +56,14 @@ int		init_table(t_table *table, char **argv);
 
 // Philo routine
 void	*philo_routine(void *arg);
+void	*one_philo_routine(t_philo *philo);
 void	print_status(t_philo *philo, char *state);
 void	start_sim(t_table *table);
 
 // Custom time utils
 long	get_time(void);
-void	ft_usleep(long time);
-void	think_time(t_philo *philo);
+int		ft_usleep(long time, t_table *table);
+int		think_time(t_philo *philo);
 
 // errors
 void	cleanup(t_table *table);

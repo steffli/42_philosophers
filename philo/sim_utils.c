@@ -38,7 +38,6 @@ static	bool	died(t_philo *philo)
 	long	start;
 
 	start = get_time();
-
 	pthread_mutex_lock(&philo->table->death_lock);
 	time = start - philo->last_meal;
 	if (time >= philo->table->time_to_die)

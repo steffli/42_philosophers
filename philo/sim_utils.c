@@ -79,13 +79,17 @@ static void	monitor(t_table *table)
 
 void	start_sim(t_table *table)
 {
-	int	i;
+	int		i;
+	long	start;
 
 	i = 0;
-	table->start_time = get_time();
+	start = get_time();
+	table->start_time = start;
 	while (i < table->n_philos)
 	{
-		table->philos[i].last_meal = get_time();
+		pthread_mutex_lock(&table->death_lock);
+		table->philos[i].last_meal = start;
+		pthread_mutex_unlock(&table->death_lock);
 		pthread_create(&table->philos[i].thread, NULL,
 			philo_routine, &table->philos[i]);
 		i++;
@@ -103,13 +107,15 @@ void	print_status(t_philo *philo, char *state)
 {
 	long	time;
 
-	pthread_mutex_lock(&philo->table->write_lock);
 	pthread_mutex_lock(&philo->table->death_lock);
 	if (!philo->table->dead)
 	{
 		time = get_time() - philo->table->start_time;
+		pthread_mutex_unlock(&philo->table->death_lock);
+		pthread_mutex_lock(&philo->table->write_lock);
 		printf("%ld %d %s\n", time, philo->id, state);
+		pthread_mutex_unlock(&philo->table->write_lock);
 	}
-	pthread_mutex_unlock(&philo->table->death_lock);
-	pthread_mutex_unlock(&philo->table->write_lock);
+	else
+		pthread_mutex_unlock(&philo->table->death_lock);
 }

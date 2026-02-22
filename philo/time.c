@@ -46,13 +46,26 @@ int	ft_usleep(long time, t_table *table)
 int	think_time(t_philo *philo)
 {
 	long	time_to_think;
+	long	margin;
 
-	time_to_think = (philo->table->time_to_die - philo->table->time_to_eat
-			- philo->table->time_to_sleep) / 2;
-	if (time_to_think < 0)
-		time_to_think = 0;
-	if (time_to_think > 600)
-		time_to_think = 200;
+	margin = philo->table->time_to_die - philo->table->time_to_eat
+		- philo->table->time_to_sleep;
+	if (philo->table->n_philos % 2 == 1)
+	{
+		if (margin < philo->table->time_to_eat)
+			return (0);
+		time_to_think = margin - philo->table->time_to_eat;
+		if (time_to_think > 600)
+			time_to_think = 200;
+	}
+	else
+	{
+		time_to_think = margin / 2;
+		if (time_to_think < 0)
+			time_to_think = 0;
+		if (time_to_think > 600)
+			time_to_think = 200;
+	}
 	if (time_to_think > 0)
 		return (ft_usleep(time_to_think, philo->table));
 	return (0);

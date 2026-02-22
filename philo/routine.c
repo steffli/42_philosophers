@@ -45,18 +45,16 @@ static void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_t	*first;
 	pthread_mutex_t	*second;
-	long			time;
 
 	get_forks_order(philo, &first, &second);
 	take_forks(philo, first, second);
-	time = get_time();
 	if (philo->table->n_philos == 1)
 		return ;
-	print_status(philo, "is eating");
 	pthread_mutex_lock(&philo->table->death_lock);
-	philo->last_meal = time;
+	philo->last_meal = get_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->death_lock);
+	print_status(philo, "is eating");
 	if (ft_usleep(philo->table->time_to_eat, philo->table))
 	{
 		pthread_mutex_unlock(second);
@@ -90,10 +88,7 @@ void	*philo_routine(void *arg)
 	if (philo->table->n_philos == 1)
 		return (one_philo_routine(philo));
 	if (philo->id % 2 == 0)
-	{
-		if (think_time(philo))
-			return (NULL);
-	}
+		ft_usleep(1, philo->table);
 	while (1)
 	{
 		if (should_stop(philo))

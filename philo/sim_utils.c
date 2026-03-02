@@ -34,19 +34,19 @@ static bool	ate(t_table *table)
 
 static	bool	died(t_philo *philo)
 {
-	long	time;
-	long	start;
+	long	now;
+	long	elapsed;
 
-	start = get_time();
 	pthread_mutex_lock(&philo->table->death_lock);
-	time = start - philo->last_meal;
-	if (time >= philo->table->time_to_die)
+	now = get_time();
+	elapsed = now - philo->last_meal;
+	if (elapsed >= philo->table->time_to_die)
 	{
 		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_lock);
 		pthread_mutex_lock(&philo->table->write_lock);
 		printf("%ld %d died\n",
-			get_time() - philo->table->start_time, philo->id);
+			now - philo->table->start_time, philo->id);
 		pthread_mutex_unlock(&philo->table->write_lock);
 		return (true);
 	}

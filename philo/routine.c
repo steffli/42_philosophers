@@ -51,6 +51,13 @@ static void	philo_eat(t_philo *philo)
 	if (philo->table->n_philos == 1)
 		return ;
 	pthread_mutex_lock(&philo->table->death_lock);
+	if (philo->table->dead)
+	{
+		pthread_mutex_unlock(&philo->table->death_lock);
+		pthread_mutex_unlock(second);
+		pthread_mutex_unlock(first);
+		return ;
+	}
 	philo->last_meal = get_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->table->death_lock);
@@ -88,7 +95,7 @@ void	*philo_routine(void *arg)
 	if (philo->table->n_philos == 1)
 		return (one_philo_routine(philo));
 	if (philo->id % 2 == 0)
-		ft_usleep(1, philo->table);
+		ft_usleep(philo->table->time_to_eat, philo->table);
 	while (1)
 	{
 		if (should_stop(philo))
